@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import flwr
+import config
 
 from flwr.common import (GetPropertiesIns, GetPropertiesRes,
 GetParametersIns, GetParametersRes,
@@ -17,7 +18,7 @@ class CustomClient(flwr.client.Client):
         self.test_loader = test_loader
         self.device = device
         self.criterion = nn.CrossEntropyLoss()
-        self.optimizer = torch.optim.SGD(self.model.parameters(), lr=0.01)
+        self.optimizer = torch.optim.SGD(self.model.parameters(), lr=config.LEARNING_RATE)
 
     def get_properties(self, instruction: GetPropertiesIns) -> GetPropertiesRes:
         return GetPropertiesRes(
@@ -35,9 +36,10 @@ class CustomClient(flwr.client.Client):
     def fit(self,  instruction: FitIns) -> FitRes:
         self.model.set_model_parameters(parameters_to_ndarrays(instruction.parameters))
         self.model.train()
-        loss, acc = self.model.train_epoch(self.train_loader, self.criterion, self.optimizer, self.device)
-        new_params = ndarrays_to_parameters(self.model.get_model_parameters())
-        num_examples = len(self.train_loader.dataset)
+        for _ in range(config.EPOCHS):
+            loss, acc = self.model.train_epoch(self.train_loader, self.criterion, self.optimizer, self.device)
+            new_params = ndarrays_to_parameters(self.model.get_model_parameters())
+            num_examples = len(self.train_loader.dataset)
 
         return FitRes(
             status=Status(code=Code.OK, message="Success"),

@@ -2,6 +2,8 @@ import os
 import numpy as np
 import pandas as pd
 from torchvision import datasets, transforms
+import config
+
 
 def generate_distributed_datasets(k: int, alpha: float, save_dir: str) -> None:
     os.makedirs(save_dir, exist_ok=True)

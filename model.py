@@ -24,10 +24,7 @@ class CustomFashionModel(nn.Module):
         x = self.fc2(x)
         return x
 
-    def train_epoch(self, train_loader: DataLoader,
-                    criterion: nn.Module,
-                    optimizer: torch.optim.Optimizer,
-                    device: torch.device) -> tuple[float, float]:
+    def train_epoch(self, train_loader: DataLoader, criterion: nn.Module, optimizer: torch.optim.Optimizer, device: torch.device) -> tuple[float, float]:
         self.train()
         running_loss = 0.0
         correct = 0

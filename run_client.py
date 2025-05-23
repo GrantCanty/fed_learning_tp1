@@ -4,6 +4,7 @@ import flwr as fl
 from client import CustomClient  # Your custom client implementation
 from load import load_client_data  # Your data loading function
 from model import CustomFashionModel  # Your model implementation
+import config
 
 
 def main():
@@ -19,9 +20,7 @@ def main():
     print(f"Starting client {client_id}")
 
     # Load client data
-    data_dir = "client_data"  # Adjust path as needed
-    batch_size = 32
-    train_loader, val_loader = load_client_data(client_id, data_dir, batch_size)
+    train_loader, val_loader = load_client_data(client_id, config.SAVE_PATH, config.BATCH_SIZE)
     
     # Create model instance
     model = CustomFashionModel()
@@ -31,7 +30,7 @@ def main():
     model.to(device)
     
     # Create custom client
-    client = CustomClient( args.cid, model, train_loader, val_loader, device)
+    client = CustomClient(args.cid, model, train_loader, val_loader, device)
     
     # Start client
     print(f"Connecting to server at {args.server}")

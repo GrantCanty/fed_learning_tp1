@@ -5,28 +5,33 @@ from flwr.server import ServerConfig, Server
 from flwr.server.history import History
 import fed_avg  # Your custom FedAvg strategy
 import custom_client_manager  # Your custom client manager
+from generate_data import generate_distributed_datasets
+from config import NUM_CLIENTS, ALPHA_DIRICHLET, SAVE_PATH, NUM_ROUNDS
 
 
 def main():
+    # create dataset that will be used
+    generate_distributed_datasets(NUM_CLIENTS, ALPHA_DIRICHLET, SAVE_PATH)
+    
     # 1. Define server address
     server_address = "0.0.0.0:8080"  # Listen on all interfaces on port 8080
 
     # 2. Define federated learning hyperparameters
-    num_rounds = 5  # As specified in the assignment
-    min_available_clients = 2  # Minimum number of clients required
+    num_rounds = NUM_ROUNDS  # As specified in the assignment
+    # min_available_clients = 2  # Minimum number of clients required
     
     print(f"Starting Flower server on {server_address}")
     print(f"Number of rounds: {num_rounds}")
-    print(f"Waiting for at least {min_available_clients} clients to connect...")
+    print(f"Waiting for {NUM_CLIENTS} clients to connect...")
 
     # 3. Instantiate ClientManager 
     client_manager = custom_client_manager.CustomClientManager()
     
     # 4. Configure the strategy with proper minimums
     strategy = fed_avg.FedAvgStrategy(
-        min_fit_clients=min_available_clients,
-        min_evaluate_clients=min_available_clients,
-        min_available_clients=min_available_clients
+        min_fit_clients=NUM_CLIENTS,
+        min_evaluate_clients=NUM_CLIENTS,
+        min_available_clients=NUM_CLIENTS
     )
     
     # 5. Configure server
