@@ -1,9 +1,8 @@
 from pathlib import Path
 import json
-import time
 import flwr as fl
-from flwr.server import ServerConfig
-from flwr.server import start_server
+from flwr.server import ServerConfig, Server
+from flwr.server.history import History
 import fed_avg  # Your custom FedAvg strategy
 import custom_client_manager  # Your custom client manager
 
@@ -13,9 +12,8 @@ def main():
     server_address = "0.0.0.0:8080"  # Listen on all interfaces on port 8080
 
     # 2. Define federated learning hyperparameters
-    num_rounds = 30  # As specified in the assignment
-    min_fit_clients = 2  # Minimum number of clients required for training
-    min_available_clients = 2  # Minimum number of clients that need to be connected
+    num_rounds = 5  # As specified in the assignment
+    min_available_clients = 2  # Minimum number of clients required
     
     print(f"Starting Flower server on {server_address}")
     print(f"Number of rounds: {num_rounds}")
@@ -25,23 +23,23 @@ def main():
     client_manager = custom_client_manager.CustomClientManager()
     
     # 4. Configure the strategy with proper minimums
-    """strategy = fed_avg.FedAvgStrategy(
+    strategy = fed_avg.FedAvgStrategy(
+        min_fit_clients=min_available_clients,
+        min_evaluate_clients=min_available_clients,
         min_available_clients=min_available_clients
-    )"""
-    strategy = fed_avg.FedAvgStrategy()
+    )
     
     # 5. Configure server
     config = ServerConfig(num_rounds=num_rounds)
 
     # 6. Start the Flower server
     try:
-        # Start server without wait_for_clients parameter (it's not supported in your version)
-        history = start_server(
+        # Start server and wait for completion
+        history = fl.server.start_server(
             server_address=server_address,
             config=config,
             strategy=strategy,
-            client_manager=client_manager,
-            grpc_max_message_length=1024*1024*1024  # 1GB message size limit
+            client_manager=client_manager
         )
 
         print("Training completed! Saving results...")

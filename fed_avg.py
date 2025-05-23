@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional, Tuple, Union, Callable
+from typing import Dict, List, Optional, Tuple, Union
 import numpy as np
 from flwr.common import (
     EvaluateIns,
@@ -24,7 +24,6 @@ class FedAvgStrategy(Strategy):
         min_evaluate_clients: int = 2,
         min_available_clients: int = 2,
     ):
-        super().__init__()
         self.fraction_fit = fraction_fit
         self.fraction_evaluate = fraction_evaluate
         self.min_fit_clients = min_fit_clients
@@ -37,24 +36,8 @@ class FedAvgStrategy(Strategy):
         print(f"Waiting for {self.min_available_clients} clients before initializing parameters...")
         client_manager.wait_for(self.min_available_clients, timeout=None)
         
-        # Get list of all available clients
-        all_clients = list(client_manager.all().values())
-        if not all_clients:
-            return None
-        
-        # Get parameters from the first available client
-        client = all_clients[0]
-        print(f"Requesting initial parameters from client {client.cid}")
-        
-        # Create request to get parameters
-        ins = {}
-        try:
-            get_parameters_res = client.get_parameters(ins)
-            print("Initial parameters received. Server is ready to start training.")
-            return get_parameters_res.parameters
-        except Exception as e:
-            print(f"Error getting initial parameters: {e}")
-            return None
+        # Let Flower handle the initialization
+        return None
 
     def configure_fit(
         self, server_round: int, parameters: Parameters, client_manager: ClientManager
@@ -195,8 +178,12 @@ class FedAvgStrategy(Strategy):
         print(f"Round {server_round}: Evaluation aggregated from {len(results)} clients")
         
         return weighted_loss, metrics_avg
-
-    def evaluate(self, parameters: Parameters) -> Optional[Tuple[float, Dict[str, Scalar]]]:
-        # Optional: Return global evaluation metrics (loss, metrics) or None
-        # For simplicity, return None to delegate evaluation to clients
+    
+    # Add required evaluation method to match modern API
+    def evaluate(self, server_round: int, parameters: Parameters) -> Optional[Tuple[float, Dict[str, Scalar]]]:
+        """Evaluate the current global model parameters.
+        
+        This is a new method required in recent Flower versions.
+        """
+        print(f"Round {server_round}: Evaluating global model")
         return None

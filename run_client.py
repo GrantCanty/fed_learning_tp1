@@ -31,7 +31,7 @@ def main():
     model.to(device)
     
     # Create custom client
-    client = CustomClient(model, train_loader, val_loader, device)
+    client = CustomClient( args.cid, model, train_loader, val_loader, device)
     
     # Start client
     print(f"Connecting to server at {args.server}")
