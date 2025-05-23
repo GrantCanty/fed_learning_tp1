@@ -8,11 +8,37 @@ import config
 def generate_distributed_datasets(k: int, alpha: float, save_dir: str) -> None:
     os.makedirs(save_dir, exist_ok=True)
 
-    train_data = datasets.FashionMNIST(
+    dataset_name = config.DATASET_NAME
+    
+    # Dataset mapping
+    dataset_classes = {
+        "FashionMNIST": datasets.FashionMNIST,
+        "MNIST": datasets.MNIST,
+        "CIFAR10": datasets.CIFAR10,
+        "CIFAR100": datasets.CIFAR100,
+    }
+
+    if dataset_name not in dataset_classes:
+        raise ValueError(f"Unsupported dataset: {dataset_name}")
+    
+    dataset_class = dataset_classes[dataset_name]
+    
+    # Different transforms for different datasets
+    if dataset_name in ["FashionMNIST", "MNIST"]:
+        transform = transforms.ToTensor()
+    elif dataset_name in ["CIFAR10", "CIFAR100"]:
+        transform = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        ])
+    else:
+        transform = transforms.ToTensor()
+
+    train_data = dataset_class(
         root="./data",
         train=True,
         download=True,
-        transform=transforms.ToTensor()
+        transform=transform
     )
     
     targets = np.array(train_data.targets)
