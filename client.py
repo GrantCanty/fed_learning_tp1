@@ -36,7 +36,8 @@ class CustomClient(flwr.client.Client):
     def fit(self,  instruction: FitIns) -> FitRes:
         self.model.set_model_parameters(parameters_to_ndarrays(instruction.parameters))
         self.model.train()
-        for _ in range(config.EPOCHS):
+        for epoch in range(config.EPOCHS):
+            print(f"client evaluating epoch: {epoch}")
             loss, acc = self.model.train_epoch(self.train_loader, self.criterion, self.optimizer, self.device)
             new_params = ndarrays_to_parameters(self.model.get_model_parameters())
             num_examples = len(self.train_loader.dataset)
