@@ -32,42 +32,59 @@ In order to run the simulation, Multiple terminal tabs need to be opened. Comple
 4. Wait for the tests to complete
 5. Run `python3 run_visualizer.py --output NAME_OF_OUTPUT` to generate the images for reporting  
 
-### Round 1
-num of clients: 10  
-alpha: 1  
-rounds: 30  
-epoch: 1  
-[![Image 1](plots/accuracy_eval_plot_10_client_30_rounds_1_epoch_1_alpha.png)](plots/accuracy_eval_plot_10_client_30_rounds_1_epoch_1_alpha.png)
-[![Image 2](plots/accuracy_fit_plot_10_client_30_rounds_1_epoch_1_alpha.png)](plots/accuracy_fit_plot_10_client_30_rounds_1_epoch_1_alpha.png)
-[![Image 3](plots/loss_fit_plot_10_client_30_rounds_1_epoch_1_alpha.png)](plots/loss_fit_plot_10_client_30_rounds_1_epoch_1_alpha.png)
-[![Image 4](plots/losses_distributed_plot_10_client_30_rounds_1_epoch_1_alpha.png)](plots/losses_distributed_plot_10_client_30_rounds_1_epoch_1_alpha.png)
+### Simulation 1
+Num of clients: 10  
+Alpha: 1  
+Rounds: 30  
+Epochs: 1  
+Dataset: Fashion MNIST  
+Batch size: 32  
+Learning Rate: 0.01  
+[![Image 1](plots/accuracy_eval_plot_10_clients_30_rounds_1_epoch_1_alpha.png)](plots/accuracy_eval_plot_10_clients_30_rounds_1_epoch_1_alpha.png)
+[![Image 2](plots/accuracy_fit_plot_10_clients_30_rounds_1_epoch_1_alpha.png)](plots/accuracy_fit_plot_10_clients_30_rounds_1_epoch_1_alpha.png)
+[![Image 3](plots/loss_fit_plot_10_clients_30_rounds_1_epoch_1_alpha.png)](plots/loss_fit_plot_10_clients_30_rounds_1_epoch_1_alpha.png)
+[![Image 4](plots/losses_distributed_plot_10_clients_30_rounds_1_epoch_1_alpha.png)](plots/losses_distributed_plot_10_clients_30_rounds_1_epoch_1_alpha.png)
 
-### Round 2
-num of clients: 10  
-alpha: 0.5  
-rounds: 30  
-epoch: 1  
-[![Image 1](plots/accuracy_eval_plot_10_client_30_rounds_1_epoch_0.5_alpha.png)](plots/accuracy_eval_plot_10_client_30_rounds_1_epoch_0.5_alpha.png)
-[![Image 2](plots/accuracy_fit_plot_10_client_30_rounds_1_epoch_0.5_alpha.png)](plots/accuracy_fit_plot_10_client_30_rounds_1_epoch_0.5_alpha.png)
-[![Image 3](plots/loss_fit_plot_10_client_30_rounds_1_epoch_0.5_alpha.png)](plots/loss_fit_plot_10_client_30_rounds_1_epoch_0.5_alpha.png)
-[![Image 4](plots/losses_distributed_plot_10_client_30_rounds_1_epoch_0.5_alpha.png)](plots/losses_distributed_plot_10_client_30_rounds_1_epoch_0.5_alpha.png)
+Since this is our first simulation and it uses all the given hyper parameters, we will use this as a baseline for future simulations.  
 
-### Round 3
-num of clients: 10  
-alpha: 1  
-rounds: 30  
-epoch: 3  
-[![Image 1](plots/accuracy_eval_plot_10_client_30_rounds_3_epoch_1_alpha.png)](plots/accuracy_eval_plot_10_client_30_rounds_3_epoch_1_alpha.png)
-[![Image 2](plots/accuracy_fit_plot_10_client_30_rounds_3_epoch_1_alpha.png)](plots/accuracy_fit_plot_10_client_30_rounds_3_epoch_1_alpha.png)
-[![Image 3](plots/loss_fit_plot_10_client_30_rounds_3_epoch_1_alpha.png)](plots/loss_fit_plot_10_client_30_rounds_3_epoch_1_alpha.png)
-[![Image 4](plots/losses_distributed_plot_10_client_30_rounds_3_epoch_1_alpha.png)](plots/losses_distributed_plot_10_client_30_rounds_3_epoch_1_alpha.png)
+### Simulation 2
+Num of clients: 10  
+Alpha: 5  
+Rounds: 30  
+Epochs: 1  
+Dataset: Fashion MNIST  
+Batch size: 32  
+Learning Rate: 0.01   
+[![Image 1](plots/accuracy_eval_plot_10_clients_30_rounds_1_epoch_5_alpha.png)](plots/accuracy_eval_plot_10_clients_30_rounds_1_epoch_5_alpha.png)
+[![Image 2](plots/accuracy_fit_plot_10_clients_30_rounds_1_epoch_5_alpha.png)](plots/accuracy_fit_plot_10_clients_30_rounds_1_epoch_5_alpha.png)
+[![Image 3](plots/loss_fit_plot_10_clients_30_rounds_1_epoch_5_alpha.png)](plots/loss_fit_plot_10_clients_30_rounds_1_epoch_5_alpha.png)
+[![Image 4](plots/losses_distributed_plot_10_clients_30_rounds_1_epoch_5_alpha.png)](plots/losses_distributed_plot_10_clients_30_rounds_1_epoch_5_alpha.png)
 
-### Round 4
+In this simulation, I kept all parameters the same but increased the Alpha from 1 to 5. We can see that learning is slightly more stable than before which makes sense due to the increased homogenity in the datasets as a direct result from the increase in Alpha. With more overlapping data, we expect the local minima of each client to be closer than before, leading to less variation in the plot history. This is most prominent on the Accuracy Evaluation plot.  
+
+### Simulation 3
+Num of clients: 10  
+Alpha: 1  
+Rounds: 30  
+Epochs: 3  
+Dataset: Fashion MNIST  
+Batch size: 32  
+Learning Rate: 0.01  
+[![Image 1](plots/accuracy_eval_plot_10_clients_30_rounds_3_epochs_1_alpha.png)](plots/accuracy_eval_plot_10_clients_30_rounds_3_epochs_1_alpha.png)
+[![Image 2](plots/accuracy_fit_plot_10_clients_30_rounds_3_epochs_1_alpha.png)](plots/accuracy_fit_plot_10_clients_30_rounds_3_epochs_1_alpha.png)
+[![Image 3](plots/loss_fit_plot_10_clients_30_rounds_3_epochs_1_alpha.png)](plots/loss_fit_plot_10_clients_30_rounds_3_epochs_1_alpha.png)
+[![Image 4](plots/losses_distributed_plot_10_clients_30_rounds_3_epochs_1_alpha.png)](plots/losses_distributed_plot_10_clients_30_rounds_3_epochs_1_alpha.png)
+
+In this simulation, I kept all parameters the same from the 1st simulation but increased the Epoch count from 1 to 3. The learning appears to also be slightly more stable than the baseline, potentially due to the fact that the higher epoch count gives the clients more instances to train the model and adjust the weights. I was expecting there to be more client drift, giving plots with more variations but that was not the case in this simulation.  
+
+### Simulation 4
 num of clients: 5  
 alpha: 1  
 rounds: 30  
 epoch: 3  
-[![Image 1](plots/accuracy_eval_plot_5_client_30_rounds_3_epoch_1_alpha.png)](plots/accuracy_eval_plot_5_client_30_rounds_3_epoch_1_alpha.png)
-[![Image 2](plots/accuracy_fit_plot_5_client_30_rounds_3_epoch_1_alpha.png)](plots/accuracy_fit_plot_5_client_30_rounds_3_epoch_1_alpha.png)
-[![Image 3](plots/loss_fit_plot_5_client_30_rounds_3_epoch_1_alpha.png)](plots/loss_fit_plot_5_client_30_rounds_3_epoch_1_alpha.png)
-[![Image 4](plots/losses_distributed_plot_5_client_30_rounds_3_epoch_1_alpha.png)](plots/losses_distributed_plot_5_client_30_rounds_3_epoch_1_alpha.png)
+[![Image 1](plots/accuracy_eval_plot_5_clients_30_rounds_3_epochs_1_alpha.png)](plots/accuracy_eval_plot_5_clients_30_rounds_3_epochs_1_alpha.png)
+[![Image 2](plots/accuracy_fit_plot_5_clients_30_rounds_3_epochs_1_alpha.png)](plots/accuracy_fit_plot_5_clients_30_rounds_3_epochs_1_alpha.png)
+[![Image 3](plots/loss_fit_plot_5_clients_30_rounds_3_epochs_1_alpha.png)](plots/loss_fit_plot_5_clients_30_rounds_3_epochs_1_alpha.png)
+[![Image 4](plots/losses_distributed_plot_5_clients_30_rounds_3_epochs_1_alpha.png)](plots/losses_distributed_plot_5_clients_30_rounds_3_epochs_1_alpha.png)
+
+In this simulation, I kept all parameters the same from the 3rd simulation but decreased the Client count from 10 to 5. This made the learning more unstable which isn't too surprising, as we have fewer gradients than before and a low alpha, so we can expect any client drift to have a larger effect on the model than before. Surprisingly though, the simulations ends up giving similar end results compared to simulation 3.  
