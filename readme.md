@@ -25,12 +25,15 @@ Results are saved to the `plots` folder and end with what the user has enetered 
 
 ## Step 8
 Hyperparameters are saved to the `config.py`  
-In order to run the simulation, Multiple terminal tabs need to be opened. Complete the following steps to run the simulation
-1. Run `python3 run_server.py`. The server will now be waiting for the specified number of clients to connect
-2. Open as many terminal tabs as clients are required
-3. Run `python3 run_client.py --cid INTEGER` making sure to change the CID Integer for each client
-4. Wait for the tests to complete
-5. Run `python3 run_visualizer.py --output NAME_OF_OUTPUT` to generate the images for reporting  
+In order to run the simulation, Multiple terminal tabs need to be opened. Each terminal will need to run the virtual environment in the folder. Complete the following steps to run the simulation
+1. Open terminal and run `source venv/bin/activate` to run the Python virtual environment  
+2. Run `python3 run_server.py`. The server will now be waiting for the specified number of clients to connect
+3. Open as many terminal tabs as clients are required
+4. In each newly opened terminal, run the following commands:
+    1. `source venv/bin/activate` to run the Python virtual environment  
+    2. `python3 run_client.py --cid INTEGER` making sure to change the CID Integer for each client  
+5. Wait for the tests to complete
+6. Run `python3 run_visualizer.py --output NAME_OF_OUTPUT` to generate the images for reporting  
 
 ### Simulation 1
 Num of clients: 10  
