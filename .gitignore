@@ -3,7 +3,6 @@ __pycache__/
 *.pyc
 tp1_round2
 *.json
-plots/
 client_data/
 venv/
 *.ipynb

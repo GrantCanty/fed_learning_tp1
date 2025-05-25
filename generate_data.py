@@ -50,6 +50,7 @@ def generate_distributed_datasets(k: int, alpha: float, save_dir: str) -> None:
     client_indices = [[] for _ in range(k)]
     for c in range(num_classes):
         class_idx = class_indices[c]
+        np.random.seed(config.SEED)
         np.random.shuffle(class_idx)
 
         proportions = np.random.dirichlet(alpha=np.repeat(alpha, k))
