@@ -20,8 +20,8 @@ The client manager is taken care of by the `custom_client_manager.py` file and t
 The server is contained in the `run_server.py` file. The following command runs the server `python3 run_server.py`  
 
 ## Step 7
-This is taken care of by the `run_visualizer.py` file. The following command runs the data visualization: `python3 run_visualizer.py`  
-Results are saved to the `plots` folder
+This is taken care of by the `run_visualizer.py` file. The following command runs the data visualization: `python3 run_visualizer.py  --output NAME_OF_OUTPUT`  
+Results are saved to the `plots` folder and end with what the user has enetered for NAME_OF_OUTPUT. The title of each plots also contains the NAME_OF_OUTPUT string
 
 ## Step 8
 Hyperparameters are saved to the `config.py`  
@@ -30,4 +30,44 @@ In order to run the simulation, Multiple terminal tabs need to be opened. Comple
 2. Open as many terminal tabs as clients are required
 3. Run `python3 run_client.py --cid INTEGER` making sure to change the CID Integer for each client
 4. Wait for the tests to complete
-5. Run `python3 run_visualizer.py` to generate the images for reporting
+5. Run `python3 run_visualizer.py --output NAME_OF_OUTPUT` to generate the images for reporting  
+
+### Round 1
+num of clients: 10  
+alpha: 1  
+rounds: 30  
+epoch: 1  
+[![Image 1](plots/accuracy_eval_plot_10_client_30_rounds_1_epoch_1_alpha.png)](plots/accuracy_eval_plot_10_client_30_rounds_1_epoch_1_alpha.png)
+[![Image 2](plots/accuracy_fit_plot_10_client_30_rounds_1_epoch_1_alpha.png)](plots/accuracy_fit_plot_10_client_30_rounds_1_epoch_1_alpha.png)
+[![Image 3](plots/loss_fit_plot_10_client_30_rounds_1_epoch_1_alpha.png)](plots/loss_fit_plot_10_client_30_rounds_1_epoch_1_alpha.png)
+[![Image 4](plots/losses_distributed_plot_10_client_30_rounds_1_epoch_1_alpha.png)](plots/losses_distributed_plot_10_client_30_rounds_1_epoch_1_alpha.png)
+
+### Round 2
+num of clients: 10  
+alpha: 0.5  
+rounds: 30  
+epoch: 1  
+[![Image 1](plots/accuracy_eval_plot_10_client_30_rounds_1_epoch_0.5_alpha.png)](plots/accuracy_eval_plot_10_client_30_rounds_1_epoch_0.5_alpha.png)
+[![Image 2](plots/accuracy_fit_plot_10_client_30_rounds_1_epoch_0.5_alpha.png)](plots/accuracy_fit_plot_10_client_30_rounds_1_epoch_0.5_alpha.png)
+[![Image 3](plots/loss_fit_plot_10_client_30_rounds_1_epoch_0.5_alpha.png)](plots/loss_fit_plot_10_client_30_rounds_1_epoch_0.5_alpha.png)
+[![Image 4](plots/losses_distributed_plot_10_client_30_rounds_1_epoch_0.5_alpha.png)](plots/losses_distributed_plot_10_client_30_rounds_1_epoch_0.5_alpha.png)
+
+### Round 3
+num of clients: 10  
+alpha: 1  
+rounds: 30  
+epoch: 3  
+[![Image 1](plots/accuracy_eval_plot_10_client_30_rounds_3_epoch_1_alpha.png)](plots/accuracy_eval_plot_10_client_30_rounds_3_epoch_1_alpha.png)
+[![Image 2](plots/accuracy_fit_plot_10_client_30_rounds_3_epoch_1_alpha.png)](plots/accuracy_fit_plot_10_client_30_rounds_3_epoch_1_alpha.png)
+[![Image 3](plots/loss_fit_plot_10_client_30_rounds_3_epoch_1_alpha.png)](plots/loss_fit_plot_10_client_30_rounds_3_epoch_1_alpha.png)
+[![Image 4](plots/losses_distributed_plot_10_client_30_rounds_3_epoch_1_alpha.png)](plots/losses_distributed_plot_10_client_30_rounds_3_epoch_1_alpha.png)
+
+### Round 4
+num of clients: 5  
+alpha: 1  
+rounds: 30  
+epoch: 3  
+[![Image 1](plots/accuracy_eval_plot_5_client_30_rounds_3_epoch_1_alpha.png)](plots/accuracy_eval_plot_5_client_30_rounds_3_epoch_1_alpha.png)
+[![Image 2](plots/accuracy_fit_plot_5_client_30_rounds_3_epoch_1_alpha.png)](plots/accuracy_fit_plot_5_client_30_rounds_3_epoch_1_alpha.png)
+[![Image 3](plots/loss_fit_plot_5_client_30_rounds_3_epoch_1_alpha.png)](plots/loss_fit_plot_5_client_30_rounds_3_epoch_1_alpha.png)
+[![Image 4](plots/losses_distributed_plot_5_client_30_rounds_3_epoch_1_alpha.png)](plots/losses_distributed_plot_5_client_30_rounds_3_epoch_1_alpha.png)

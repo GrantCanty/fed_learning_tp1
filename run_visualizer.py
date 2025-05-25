@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import json
 import os
 from prettytable import PrettyTable
+import argparse
 
 
 class ResultsVisualizer:
@@ -14,7 +15,7 @@ class ResultsVisualizer:
             self.results = json.load(file)
     
     
-    def plot_results(self, fig_directory: str) -> None:
+    def plot_results(self, fig_directory: str, output_name: str) -> None:
         if self.results is None:
             return
         
@@ -28,13 +29,13 @@ class ResultsVisualizer:
             values = [item[1] for item in self.results["losses_distributed"]]
             
             plt.plot(rounds, values, marker='o', linewidth=2, markersize=6)
-            plt.title('Distributed Losses Over Training Rounds')
+            plt.title(f'Distributed Losses Over Training Rounds  - {output_name}')
             plt.xlabel('Training Round')
             plt.ylabel('Loss')
             plt.grid(True)
             plt.tight_layout()
             
-            filename = os.path.join(fig_directory, 'losses_distributed_plot.png')
+            filename = os.path.join(fig_directory, f'losses_distributed_plot_{output_name}.png')
             plt.savefig(filename)
             plt.close()
         
@@ -47,13 +48,13 @@ class ResultsVisualizer:
                     values = [item[1] for item in metric_data]
                     
                     plt.plot(rounds, values, marker='o', linewidth=2, markersize=6)
-                    plt.title(f'{metric_name.replace("_", " ").title()} (Fit) Over Training Rounds')
+                    plt.title(f'{metric_name.replace("_", " ").title()} (Fit) Over Training Rounds  - {output_name}')
                     plt.xlabel('Training Round')
                     plt.ylabel(metric_name.replace("_", " ").title())
                     plt.grid(True)
                     plt.tight_layout()
                     
-                    filename = os.path.join(fig_directory, f'{metric_name}_fit_plot.png')
+                    filename = os.path.join(fig_directory, f'{metric_name}_fit_plot_{output_name}.png')
                     plt.savefig(filename)
                     plt.close()
         
@@ -66,13 +67,13 @@ class ResultsVisualizer:
                     values = [item[1] for item in metric_data]
                     
                     plt.plot(rounds, values, marker='o', linewidth=2, markersize=6)
-                    plt.title(f'{metric_name.replace("_", " ").title()} (Evaluation) Over Training Rounds')
+                    plt.title(f'{metric_name.replace("_", " ").title()} (Evaluation) Over Training Rounds - {output_name}')
                     plt.xlabel('Training Round')
                     plt.ylabel(metric_name.replace("_", " ").title())
                     plt.grid(True)
                     plt.tight_layout()
                     
-                    filename = os.path.join(fig_directory, f'{metric_name}_eval_plot.png')
+                    filename = os.path.join(fig_directory, f'{metric_name}_eval_plot_{output_name}.png')
                     plt.savefig(filename)
                     plt.close()
     
@@ -173,6 +174,10 @@ class ResultsVisualizer:
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Run Flower Client")
+    parser.add_argument("--output", type=str, required=True, help="Client ID")
+    args = parser.parse_args()
+    
     # Create visualizer instance
     visualizer = ResultsVisualizer()
     
@@ -183,7 +188,7 @@ def main():
     visualizer.print_results_table()
     
     # Plot results
-    visualizer.plot_results("plots")
+    visualizer.plot_results("plots", args.output)
 
 
 if __name__ == "__main__":
