@@ -1,26 +1,52 @@
 # TP1
 
 ## Step 1
-Data generation is taken care of by the `generate_data.py` and data loading is taken care of by the `load.py` file  
-Newly generated data is saved to the `client_data` folder  
+Data generation is taken care of by the `generate_data.py` and data loading is taken care of by the `load.py` file. Newly generated data is saved to the `client_data` folder  
+
+The `generate_distributed_datasets` function creates a directory to save the datasets to if it is not already created, takes the dataset name variable set in the `config` file and checks if it is a valid name, transforms the dataset, shuffles & splits it based on the alpha value, and creates as many .csv datasets as there are clients.  
+
+The `load_client_data` function loads the datasets from the directory where they were saved to, normalizes & reshapes them, and splits them into a train/test split. It then transforms them to tensors and combines the tensors and ultimately, loaders.  
 
 ## Step 2
 This is taken care of by the `model.py` file  
 
+This model has 2 CNN layers.  
+
+The `train_epoch` function calls the train function, initializes metrics to 0, creates a zero gradient, gets loss values, and starts going through the data. it then aggregates metrics until the testing is completed. From here, it then returns the metrics.  
+
+The `test_epoch` function does the testing on unseen data. it initializes metrics to 0, creates a zero gradient, and tries predicting on the unseen data. It finally aggreagates metrics and returns them.  
+
 ## Step 3
 This is taken care of by the `client.py` file  
 
+The `fit` function calls the train method on the model and does training for the set number of epochs in the `config` file. it gets the metrics from the `train_epoch` method and returns metrics after the epochs are done.  
+
+The `evaluate` function calls the `test_epoch` method and returns the metrics.  
+
 ## Step 4
-This is taken care of by the `run_client.py` file. The command `python3 run_client.py --cid INTEGER` will run the client. The server must be running or else the client will fail  
+This is taken care of by the `run_client.py` file. The command `python3 run_client.py --cid INTEGER` will run the client. The server must be running or else the client will fail.  
+
+the `run_client.py` file had added `--cid` and `--server` arguments. `--server` is optional and lets the user enter a custom IP address to connect to. `--cid` sets the client id number. This file calls the `load_client_data` function to load in the data and creates the model and client. It then finally starts the client.  
 
 ## Step 5
-The client manager is taken care of by the `custom_client_manager.py` file and the strategy is taken care of by the `fed_avg.py` file  
+The client manager is taken care of by the `custom_client_manager.py` file and the strategy is taken care of by the `fed_avg.py` file.  
+
+The client manager has a dictionary where it stores the registered clients in a dictionary by their ID number. The `register` function adds the client to the dictionary and `unregister` function removes the client from the dictionary. The `wait_for` function sets a timeout for the server to let clients connect. The `sample` function returns a group of clients.  
+
+The `configure_fit` and `configure_evaluate` functions get the larger of the min number of clients, or a fraction of the amount of clients connected to the server and returns the response from the `sample` function.  
+
+The `aggregate_fit` function aggregates the weight results. It gets the weight results, combines them, and does a weighted average on them.  
+
+The `aggregate_evaluate` function does the same as `aggregate_fit` but for testing data instead of training data.  
 
 ## Step 6
 The server is contained in the `run_server.py` file. The following command runs the server `python3 run_server.py`  
 
+Running this file creates the datasets, sets the server address, and imports number of rounds from the `config` file. It then imports the custom client manager and sets the Fed AVG strategy. From there, it then configures the server and tries to run it. Finally, it gets the history and saves it to a file name `fl_history.json`. 
+
 ## Step 7
 This is taken care of by the `run_visualizer.py` file. The following command runs the data visualization: `python3 run_visualizer.py  --output NAME_OF_OUTPUT`  
+
 Results are saved to the `plots` folder and end with what the user has enetered for NAME_OF_OUTPUT. The title of each plots also contains the NAME_OF_OUTPUT string
 
 ## Step 8
